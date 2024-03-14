@@ -10,4 +10,9 @@ class Post extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function comments(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Comment::class);
+    }
 }
