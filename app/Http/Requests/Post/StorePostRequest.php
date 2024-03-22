@@ -25,7 +25,8 @@ class StorePostRequest extends FormRequest
         return [
             'title' => ['required', 'min:6', 'max:100'],
             'content' => ['required', 'min:6', 'max:800'],
-            'picture' => [File::image()]
+            'picture' => [File::image()],
+            'tags' => ['array', 'between:1,4', 'exclude']
         ];
     }
 }

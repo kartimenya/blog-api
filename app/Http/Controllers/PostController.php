@@ -6,13 +6,21 @@ use App\Http\Requests\Post\StorePostRequest;
 use App\Http\Requests\Post\UpdatePostRequest;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use App\Models\Tag;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return PostResource::collection(Post::query()->paginate());
+        $post = Post::query()
+            ->when($request->tag, function (Builder $query) use ($request) {
+                $query->whereHas('tags', fn(Builder $q) => $q->where('name', $request->tag));
+            });
+
+        return PostResource::collection($post->paginate());
     }
 
     public function store(StorePostRequest $request)
@@ -26,6 +34,13 @@ class PostController extends Controller
         }
 
         $post = Post::query()->create($data);
+
+        if ($request->tags){
+            foreach ($request->tags as $tag) {
+                $tag = Tag::query()->firstOrCreate(['name' => $tag]);
+                $post->tags()->attach($tag);
+            }
+        }
 
         return PostResource::make($post);
     }

@@ -15,4 +15,9 @@ class Post extends Model
     {
         return $this->belongsTo(Comment::class);
     }
+
+    public function tags(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }
