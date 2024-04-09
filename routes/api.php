@@ -17,6 +17,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('posts', [PostController::class, 'store']);
     Route::put('posts/{post}', [PostController::class, 'update']);
     Route::delete('posts/{post}', [PostController::class, 'destroy']);
+
+    Route::put('like/{post}', [PostController::class, 'likePost']);
 });
 
 Route::get('comments/{post}', [CommentController::class, 'show']);

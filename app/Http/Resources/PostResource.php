@@ -21,6 +21,7 @@ class PostResource extends JsonResource
             'picture' => $this->picture,
             'user_id' => $this->user_id,
             'tags' => TagResource::collection($this->tags),
+            'likes' => $this->likes()->count(),
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
         ];

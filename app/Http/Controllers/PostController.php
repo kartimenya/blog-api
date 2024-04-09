@@ -69,4 +69,13 @@ class PostController extends Controller
         $post->delete();
         return response()->json('Post deleted');
     }
+
+    public function likePost(Request $request, Post $post)
+    {
+        $user = $request->user();
+        $user->hasLiked($post)
+            ? $user->unlike($post)
+            : $user->like($post);
+        return PostResource::make($post);
+    }
 }
